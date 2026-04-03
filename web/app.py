@@ -67,6 +67,7 @@ def index():
         occupancy_groups=[o.value for o in OccupancyGroup],
         zoning_districts=[z.value for z in ZoningDistrict],
         today=date.today().isoformat(),
+        statsig_client_key=os.environ.get("STATSIG_CLIENT_KEY", ""),
     )
 
 
