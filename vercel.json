@@ -5,7 +5,14 @@
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": ["web/**", "models/**", "generators/**", "data/**"]
+        "maxDuration": 30,
+        "includeFiles": [
+          "web/**",
+          "models/**",
+          "generators/**",
+          "data/**",
+          "requirements.txt"
+        ]
       }
     }
   ],

@@ -32,10 +32,17 @@ from models.building import (
 from generators.pdf_generator import generate_pdf
 from generators.compliance_checker import check_compliance
 
-app = Flask(__name__)
-app.secret_key = os.environ.get("CV2CC_SECRET")
-if not app.secret_key:
-    raise RuntimeError("CV2CC_SECRET environment variable is not set. Add it to .env (local) or Vercel dashboard (production).")
+app = Flask(
+    __name__,
+    template_folder=str(Path(__file__).parent / "templates"),
+    static_folder=str(Path(__file__).parent / "static"),
+)
+_secret = os.environ.get("CV2CC_SECRET")
+if _secret:
+    app.secret_key = _secret
+else:
+    import secrets as _secrets
+    app.secret_key = _secrets.token_hex(32)  # ephemeral — set CV2CC_SECRET in env for persistent sessions
 
 # Vercel's filesystem is read-only; use /tmp there, web/generated locally
 OUTPUT_DIR = Path("/tmp/cv2cc") if os.environ.get("VERCEL") else Path(__file__).parent / "generated"
