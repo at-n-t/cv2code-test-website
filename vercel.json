@@ -1,10 +1,15 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/index.py", "use": "@vercel/python" }
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": ["web/**", "models/**", "generators/**", "data/**"]
+      }
+    }
   ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/web/static/$1" },
-    { "src": "/(.*)",        "dest": "/api/index.py"  }
+    { "src": "/(.*)", "dest": "/api/index.py" }
   ]
 }
