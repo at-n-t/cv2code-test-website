@@ -16,6 +16,9 @@ web/generated/*.pdf
 .env
 *.env
 
+# Markdown files (security + A/B testing)
+*.md
+
 # Claude local settings
 .claude/settings.local.json
 

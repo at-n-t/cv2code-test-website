@@ -10,6 +10,13 @@ import tempfile
 from pathlib import Path
 from datetime import date, datetime
 
+# Load .env for local development (no-op on Vercel where env vars are set in dashboard)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass  # python-dotenv not installed; rely on environment variables already being set
+
 # Allow imports from parent directory
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -26,7 +33,9 @@ from generators.pdf_generator import generate_pdf
 from generators.compliance_checker import check_compliance
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("CV2CC_SECRET", "cv2cc-dev-secret-change-in-prod")
+app.secret_key = os.environ.get("CV2CC_SECRET")
+if not app.secret_key:
+    raise RuntimeError("CV2CC_SECRET environment variable is not set. Add it to .env (local) or Vercel dashboard (production).")
 
 # Vercel's filesystem is read-only; use /tmp there, web/generated locally
 OUTPUT_DIR = Path("/tmp/cv2cc") if os.environ.get("VERCEL") else Path(__file__).parent / "generated"
