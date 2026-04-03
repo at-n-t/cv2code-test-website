@@ -1,0 +1,57 @@
+{
+  "project_name": "",
+  "project_number": "",
+  "permit_number": "",
+  "date_prepared": "2026-04-02",
+  "prepared_by": "",
+  "architect_license": "",
+  "engineer_license": "",
+  "site_address": "",
+  "parcel_number": "",
+  "jurisdiction": {
+    "country": "USA",
+    "state": "",
+    "county": "",
+    "city": "",
+    "ibc_edition": "2021",
+    "irc_edition": "2021",
+    "nfpa_edition": "2021",
+    "local_amendments": ""
+  },
+  "zoning_district": "R-1",
+  "risk_category": "II",
+  "construction_type": "V-B",
+  "occupancy_groups": [
+    "B"
+  ],
+  "mixed_occupancy": false,
+  "mixed_occupancy_method": "",
+  "stories_above_grade": 1,
+  "stories_below_grade": 0,
+  "building_height_ft": 0,
+  "total_floor_area_sqft": 0,
+  "footprint_sqft": 0,
+  "rooms": [
+    {
+      "name": "Example Room",
+      "occupancy_group": "B",
+      "floor_area_sqft": 500,
+      "occupant_load_factor": 100
+    }
+  ],
+  "sprinkler_system": false,
+  "sprinkler_standard": "",
+  "fire_alarm_system": false,
+  "fire_alarm_standard": "",
+  "ada_compliant": true,
+  "accessible_route": true,
+  "accessible_parking_spaces": 0,
+  "total_parking_spaces": 0,
+  "energy_code": "",
+  "climate_zone": "",
+  "osha_applicable": false,
+  "ifc_edition": "2021",
+  "additional_codes": [],
+  "special_conditions": "",
+  "variances_requested": ""
+}

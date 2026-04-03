@@ -1,0 +1,55 @@
+{
+  "_note": "Key universal and safety codes referenced in CV2 compliance review",
+  "fire_protection": {
+    "NFPA_1":  "Fire Code — general fire safety requirements",
+    "NFPA_13": "Sprinkler Systems (commercial)",
+    "NFPA_13R": "Sprinkler Systems (residential ≤4 stories)",
+    "NFPA_13D": "Sprinkler Systems (one- and two-family dwellings)",
+    "NFPA_14": "Standpipe and Hose Systems",
+    "NFPA_20": "Fire Pumps",
+    "NFPA_72": "National Fire Alarm and Signaling Code",
+    "NFPA_101": "Life Safety Code (alternative to IBC egress)"
+  },
+  "structural": {
+    "ASCE_7":  "Minimum Design Loads — wind, seismic, snow",
+    "ACI_318": "Structural Concrete",
+    "AISC_360": "Structural Steel",
+    "NDS":     "National Design Specification (Wood)",
+    "MSJC":    "Masonry Structures"
+  },
+  "mechanical_electrical_plumbing": {
+    "IMC":  "International Mechanical Code",
+    "IPC":  "International Plumbing Code",
+    "IFGC": "International Fuel Gas Code",
+    "NEC":  "NFPA 70 — National Electrical Code",
+    "IECC": "International Energy Conservation Code",
+    "ASHRAE_90_1": "Energy Standard for Buildings (commercial)"
+  },
+  "accessibility": {
+    "ADA_2010": "ADA Standards for Accessible Design",
+    "ICC_A117_1": "Accessible and Usable Buildings and Facilities",
+    "FHA":     "Fair Housing Act Accessibility Guidelines",
+    "Section_504": "Rehabilitation Act Section 504"
+  },
+  "occupational_safety": {
+    "OSHA_29_CFR_1910": "General Industry Safety Standards",
+    "OSHA_29_CFR_1926": "Construction Safety Standards",
+    "OSHA_1910_36":     "Exit Routes",
+    "OSHA_1910_37":     "Maintenance and Safeguards for Exit Routes"
+  },
+  "environmental": {
+    "EPA_CAA":  "Clean Air Act",
+    "EPA_CWA":  "Clean Water Act — stormwater permits",
+    "LEED":     "Leadership in Energy and Environmental Design",
+    "CalGreen": "California Green Building Standards Code (where applicable)"
+  },
+  "sprinkler_thresholds": {
+    "_note": "IBC mandatory sprinkler trigger conditions",
+    "A":    "All A occupancies > 12,000 sq ft or > 300 occupants",
+    "B":    "High-rise buildings (>55 ft above lowest discharge level)",
+    "E":    "E occupancies > 12,000 sq ft or > 1 story",
+    "H":    "All H-1 through H-5 occupancies",
+    "I":    "All I occupancies",
+    "R":    "All R occupancies (NFPA 13R for ≤4 stories; NFPA 13D for 1-2 family)"
+  }
+}

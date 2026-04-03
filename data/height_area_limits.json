@@ -1,0 +1,49 @@
+{
+  "_source": "IBC Tables 504.3, 504.4, 506.2 — Maximum height (ft), stories, and floor area (sq ft) per story",
+  "_note": "Values shown without sprinklers. Increases may apply per IBC 504.2 / 506.3. S = with NFPA-13 sprinklers.",
+  "I-A": {
+    "A-1":  { "height_ft": "UL", "stories": "UL", "area_sqft": "UL" },
+    "B":    { "height_ft": "UL", "stories": "UL", "area_sqft": "UL" },
+    "R-2":  { "height_ft": "UL", "stories": "UL", "area_sqft": "UL" }
+  },
+  "I-B": {
+    "A-1":  { "height_ft": 160, "stories": 11, "area_sqft": "UL" },
+    "B":    { "height_ft": 160, "stories": 11, "area_sqft": "UL" },
+    "R-2":  { "height_ft": 160, "stories": 11, "area_sqft": "UL" }
+  },
+  "II-A": {
+    "A-1":  { "height_ft": 65, "stories": 3, "area_sqft": 15500 },
+    "B":    { "height_ft": 65, "stories": 5, "area_sqft": 37500 },
+    "R-2":  { "height_ft": 65, "stories": 4, "area_sqft": 24000 }
+  },
+  "II-B": {
+    "A-1":  { "height_ft": 55, "stories": 2, "area_sqft": 8500 },
+    "B":    { "height_ft": 55, "stories": 4, "area_sqft": 23000 },
+    "R-2":  { "height_ft": 55, "stories": 4, "area_sqft": 16000 }
+  },
+  "III-A": {
+    "A-1":  { "height_ft": 65, "stories": 3, "area_sqft": 14000 },
+    "B":    { "height_ft": 65, "stories": 5, "area_sqft": 19000 },
+    "R-2":  { "height_ft": 65, "stories": 4, "area_sqft": 24000 }
+  },
+  "III-B": {
+    "A-1":  { "height_ft": 55, "stories": 2, "area_sqft": 8500 },
+    "B":    { "height_ft": 55, "stories": 3, "area_sqft": 12000 },
+    "R-2":  { "height_ft": 55, "stories": 4, "area_sqft": 16000 }
+  },
+  "IV": {
+    "A-1":  { "height_ft": 65, "stories": 3, "area_sqft": 15000 },
+    "B":    { "height_ft": 65, "stories": 5, "area_sqft": 20500 },
+    "R-2":  { "height_ft": 65, "stories": 4, "area_sqft": 20500 }
+  },
+  "V-A": {
+    "A-1":  { "height_ft": 50, "stories": 2, "area_sqft": 8500 },
+    "B":    { "height_ft": 50, "stories": 3, "area_sqft": 9500 },
+    "R-2":  { "height_ft": 50, "stories": 4, "area_sqft": 12000 }
+  },
+  "V-B": {
+    "A-1":  { "height_ft": 40, "stories": 1, "area_sqft": 5500 },
+    "B":    { "height_ft": 40, "stories": 2, "area_sqft": 5500 },
+    "R-2":  { "height_ft": 40, "stories": 4, "area_sqft": 8500 }
+  }
+}

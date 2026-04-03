@@ -1,0 +1,46 @@
+{
+  "_source": "ADA Standards for Accessible Design (2010), IBC Chapter 11, ICC A117.1-2017",
+  "parking": {
+    "_note": "Required accessible spaces per IBC Table 1106.1",
+    "tiers": [
+      { "total_max": 25,   "required_accessible": 1 },
+      { "total_max": 50,   "required_accessible": 2 },
+      { "total_max": 75,   "required_accessible": 3 },
+      { "total_max": 100,  "required_accessible": 4 },
+      { "total_max": 150,  "required_accessible": 5 },
+      { "total_max": 200,  "required_accessible": 6 },
+      { "total_max": 300,  "required_accessible": 7 },
+      { "total_max": 400,  "required_accessible": 8 },
+      { "total_max": 500,  "required_accessible": 9 },
+      { "total_max": 1000, "required_accessible": "2% of total" },
+      { "total_max": 99999,"required_accessible": "20 + 1 per 100 over 1000" }
+    ],
+    "van_accessible_ratio": "1 in every 6 accessible spaces must be van-accessible"
+  },
+  "restrooms": {
+    "required_fixtures_note": "At least one accessible toilet room per floor/level served by an elevator",
+    "turning_radius_in": 60,
+    "grab_bar_required": true,
+    "lavatory_clearance_in": 34
+  },
+  "doors": {
+    "min_clear_width_in": 32,
+    "preferred_clear_width_in": 36,
+    "threshold_max_height_in": 0.5,
+    "hardware": "Lever or loop handles required (no round knobs)"
+  },
+  "ramps": {
+    "max_slope_ratio": "1:12",
+    "max_rise_between_landings_in": 30,
+    "min_width_in": 36,
+    "handrails_required_if_rise_exceeds_in": 6
+  },
+  "exits": {
+    "area_of_rescue_required": "Required in buildings with accessible floors above or below grade-level exit",
+    "signage": "Accessible egress signs required at all accessible exit routes"
+  },
+  "elevators": {
+    "required_if_stories_above": 1,
+    "exceptions": ["R-3 occupancies", "Buildings with accessible ground-floor use only"]
+  }
+}

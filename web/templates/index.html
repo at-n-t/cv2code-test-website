@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV2CC &mdash; Code Compliance Form Generator v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<!-- ============================================================
+     TOP NAV
+     ============================================================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-icon">&#9632;</span>
+      <span class="brand-name">CV2<em>CC</em></span>
+      <span class="brand-tagline">Permit Form Generator</span>
+    </div>
+    <nav class="topbar-nav">
+      <a href="#" class="btn-outline" id="btn-load-demo">Load Demo Project</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================
+     STEP PROGRESS BAR
+     ============================================================ -->
+<div class="steps-bar">
+  <div class="steps-inner">
+    <button class="step-item active" data-step="1">
+      <span class="step-num">1</span><span class="step-label">Project</span>
+    </button>
+    <div class="step-connector"></div>
+    <button class="step-item" data-step="2">
+      <span class="step-num">2</span><span class="step-label">Location</span>
+    </button>
+    <div class="step-connector"></div>
+    <button class="step-item" data-step="3">
+      <span class="step-num">3</span><span class="step-label">Classification</span>
+    </button>
+    <div class="step-connector"></div>
+    <button class="step-item" data-step="4">
+      <span class="step-num">4</span><span class="step-label">Dimensions</span>
+    </button>
+    <div class="step-connector"></div>
+    <button class="step-item" data-step="5">
+      <span class="step-num">5</span><span class="step-label">Systems</span>
+    </button>
+    <div class="step-connector"></div>
+    <button class="step-item" data-step="6">
+      <span class="step-num">6</span><span class="step-label">Review</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE HERO
+     ============================================================ -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-text">
+      <h1>Code Compliance<br><em>Form Generator</em></h1>
+      <p>Automate CV2 building permit forms with IBC, ADA &amp; state-adopted code compliance — powered by AI.</p>
+    </div>
+    <div class="page-hero-meta">
+      <span>50 US States &amp; territories</span>
+      <span>IBC 2018 / 2021 / 2024</span>
+      <span>ADA 2010 Standards</span>
+      <span>NFPA 13 / 72 / IFC</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN LAYOUT
+     ============================================================ -->
+<main class="main-layout">
+
+  <!-- LEFT: form panels -->
+  <div class="form-area">
+
+    <!-- ── STEP 1: PROJECT IDENTIFICATION ── -->
+    <section class="form-panel active" id="step-1">
+      <div class="panel-header">
+        <h2>Project <em>Identification</em></h2>
+        <p>Basic project and professional credentials.</p>
+      </div>
+
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>Project Name <span class="req">*</span></label>
+          <input type="text" id="project_name" placeholder="e.g. Riverside Commerce Center" />
+        </div>
+        <div class="field">
+          <label>Project Number</label>
+          <input type="text" id="project_number" placeholder="e.g. 2025-0312" />
+        </div>
+        <div class="field">
+          <label>Permit Number</label>
+          <input type="text" id="permit_number" placeholder="e.g. BP-2025-00441" />
+        </div>
+        <div class="field">
+          <label>Date Prepared</label>
+          <input type="date" id="date_prepared" value="{{ today }}" />
+        </div>
+        <div class="field col-span-2">
+          <label>Prepared By</label>
+          <input type="text" id="prepared_by" placeholder="Full name and title" />
+        </div>
+        <div class="field">
+          <label>Architect License #</label>
+          <input type="text" id="architect_license" placeholder="e.g. CA-C-12345" />
+        </div>
+        <div class="field">
+          <label>Engineer License #</label>
+          <input type="text" id="engineer_license" placeholder="e.g. SE-67890" />
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <span></span>
+        <button class="btn-primary" onclick="goStep(2)">Next: Location &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 2: SITE & JURISDICTION ── -->
+    <section class="form-panel" id="step-2">
+      <div class="panel-header">
+        <h2>Site &amp; <em>Jurisdiction</em></h2>
+        <p>Address, jurisdiction, and adopted code editions.</p>
+      </div>
+
+      <div class="field-grid col-1">
+        <div class="field">
+          <label>Site Address <span class="req">*</span></label>
+          <input type="text" id="site_address" placeholder="Street, City, State ZIP" />
+        </div>
+      </div>
+
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>Parcel Number (APN)</label>
+          <input type="text" id="parcel_number" placeholder="e.g. 123-456-789-00" />
+        </div>
+        <div class="field">
+          <label>Zoning District</label>
+          <select id="zoning_district">
+            {% for z in zoning_districts %}
+            <option value="{{ z }}">{{ z }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <input type="text" id="city" placeholder="City" />
+        </div>
+        <div class="field">
+          <label>County</label>
+          <input type="text" id="county" placeholder="County" />
+        </div>
+        <div class="field">
+          <label>State</label>
+          <select id="state">
+            <option value="">-- Select State --</option>
+            {% for code, info in states.items() %}
+            <option value="{{ code }}">{{ code }} &mdash; {{ info.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input type="text" id="country" value="USA" />
+        </div>
+      </div>
+
+      <div class="section-divider">Adopted Code Editions</div>
+      <p class="hint">Auto-filled from state selection. Override as needed.</p>
+      <div class="field-grid col-3">
+        <div class="field">
+          <label>IBC Edition</label>
+          <input type="text" id="ibc_edition" value="2021" placeholder="e.g. 2021" />
+        </div>
+        <div class="field">
+          <label>IRC Edition</label>
+          <input type="text" id="irc_edition" value="2021" placeholder="e.g. 2021" />
+        </div>
+        <div class="field">
+          <label>IFC Edition</label>
+          <input type="text" id="ifc_edition" value="2021" placeholder="e.g. 2021" />
+        </div>
+        <div class="field">
+          <label>NFPA Edition</label>
+          <input type="text" id="nfpa_edition" value="2021" placeholder="e.g. 2021" />
+        </div>
+        <div class="field col-span-2">
+          <label>Local Amendments</label>
+          <input type="text" id="local_amendments" placeholder="e.g. City of Sacramento 2022 amendments" />
+        </div>
+      </div>
+
+      <div class="state-note" id="state-note" style="display:none"></div>
+
+      <div class="step-actions">
+        <button class="btn-ghost" onclick="goStep(1)">&larr; Back</button>
+        <button class="btn-primary" onclick="goStep(3)">Next: Classification &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 3: BUILDING CLASSIFICATION ── -->
+    <section class="form-panel" id="step-3">
+      <div class="panel-header">
+        <h2>Building <em>Classification</em></h2>
+        <p>Risk category, construction type, and occupancy per IBC Chapters 3, 6, and Table 1604.5.</p>
+      </div>
+
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>Risk Category <span class="req">*</span>
+            <span class="tooltip-icon" data-tip="risk">?</span>
+          </label>
+          <select id="risk_category">
+            {% for r in risk_categories %}
+            <option value="{{ r }}" {% if r == 'II' %}selected{% endif %}>{{ r }}</option>
+            {% endfor %}
+          </select>
+          <div class="field-hint" id="risk-hint"></div>
+        </div>
+        <div class="field">
+          <label>Construction Type <span class="req">*</span>
+            <span class="tooltip-icon" data-tip="construction">?</span>
+          </label>
+          <select id="construction_type">
+            {% for c in construction_types %}
+            <option value="{{ c }}" {% if c == 'V-B' %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+          <div class="field-hint" id="construction-hint"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Occupancy Group(s) <span class="req">*</span>
+          <span class="tooltip-icon" data-tip="occupancy">?</span>
+        </label>
+        <div class="occupancy-grid" id="occupancy-grid">
+          {% for og in occupancy_groups %}
+          <label class="occ-chip">
+            <input type="checkbox" name="occupancy_groups" value="{{ og }}" />
+            <span>{{ og }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="field mixed-occ-row" id="mixed-occ-row" style="display:none">
+        <label>Mixed Occupancy Separation Method</label>
+        <select id="mixed_occupancy_method">
+          <option value="Non-Separated">Non-Separated (IBC 508.3)</option>
+          <option value="Separated">Separated (IBC 508.4)</option>
+          <option value="Accessory">Accessory (IBC 508.2)</option>
+        </select>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-ghost" onclick="goStep(2)">&larr; Back</button>
+        <button class="btn-primary" onclick="goStep(4)">Next: Dimensions &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 4: DIMENSIONS & ROOMS ── -->
+    <section class="form-panel" id="step-4">
+      <div class="panel-header">
+        <h2>Dimensions &amp; <em>Room Schedule</em></h2>
+        <p>Height, area, and per-room occupant load calculation.</p>
+      </div>
+
+      <div class="field-grid col-3">
+        <div class="field">
+          <label>Stories Above Grade</label>
+          <input type="number" id="stories_above_grade" value="1" min="1" />
+        </div>
+        <div class="field">
+          <label>Stories Below Grade</label>
+          <input type="number" id="stories_below_grade" value="0" min="0" />
+        </div>
+        <div class="field">
+          <label>Building Height (ft)</label>
+          <input type="number" id="building_height_ft" value="" min="0" step="0.1" placeholder="0.0" />
+        </div>
+        <div class="field">
+          <label>Total Floor Area (sq ft)</label>
+          <input type="number" id="total_floor_area_sqft" value="" min="0" placeholder="0" />
+        </div>
+        <div class="field">
+          <label>Footprint Area (sq ft)</label>
+          <input type="number" id="footprint_sqft" value="" min="0" placeholder="0" />
+        </div>
+      </div>
+
+      <div class="section-divider">
+        Room Schedule
+        <span class="hint-inline">&mdash; IBC Table 1004.5 Occupant Load Factors</span>
+      </div>
+
+      <div class="room-table-wrap">
+        <table class="room-table" id="room-table">
+          <thead>
+            <tr>
+              <th>Room / Space</th>
+              <th>Occupancy</th>
+              <th>Area (sq ft)</th>
+              <th>Load Factor</th>
+              <th>Occ. Load</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="room-tbody">
+            <!-- rows injected by JS -->
+          </tbody>
+          <tfoot>
+            <tr class="room-total-row">
+              <td colspan="2"><strong>TOTAL</strong></td>
+              <td id="total-area">—</td>
+              <td></td>
+              <td id="total-occ-load">—</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <button class="btn-add-room" id="btn-add-room" type="button">+ Add Room</button>
+
+      <div class="step-actions">
+        <button class="btn-ghost" onclick="goStep(3)">&larr; Back</button>
+        <button class="btn-primary" onclick="goStep(5)">Next: Systems &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 5: SYSTEMS & NOTES ── -->
+    <section class="form-panel" id="step-5">
+      <div class="panel-header">
+        <h2>Systems &amp; <em>Accessibility</em></h2>
+        <p>Fire protection, ADA compliance, energy codes, and notes.</p>
+      </div>
+
+      <div class="section-divider">Fire Protection</div>
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>Sprinkler System</label>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" id="sprinkler_system" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="sprinkler-label">No</span>
+          </div>
+        </div>
+        <div class="field" id="sprinkler-standard-field" style="display:none">
+          <label>Sprinkler Standard</label>
+          <select id="sprinkler_standard">
+            <option value="NFPA 13">NFPA 13 (Commercial)</option>
+            <option value="NFPA 13R">NFPA 13R (Residential &le;4 stories)</option>
+            <option value="NFPA 13D">NFPA 13D (1- &amp; 2-family)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fire Alarm System</label>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" id="fire_alarm_system" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="alarm-label">No</span>
+          </div>
+        </div>
+        <div class="field" id="alarm-standard-field" style="display:none">
+          <label>Fire Alarm Standard</label>
+          <select id="fire_alarm_standard">
+            <option value="NFPA 72">NFPA 72</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-divider">Accessibility (ADA / IBC Ch. 11)</div>
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>ADA Compliant</label>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" id="ada_compliant" checked />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="ada-label">Yes</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Accessible Route Provided</label>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" id="accessible_route" checked />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="route-label">Yes</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Total Parking Spaces</label>
+          <input type="number" id="total_parking_spaces" value="0" min="0" />
+        </div>
+        <div class="field">
+          <label>Accessible Parking Spaces</label>
+          <input type="number" id="accessible_parking_spaces" value="0" min="0" />
+          <div class="field-hint" id="parking-req-hint"></div>
+        </div>
+      </div>
+
+      <div class="section-divider">Energy &amp; Environment</div>
+      <div class="field-grid col-2">
+        <div class="field">
+          <label>Energy Code</label>
+          <input type="text" id="energy_code" placeholder="e.g. ASHRAE 90.1-2019 / IECC 2021" />
+        </div>
+        <div class="field">
+          <label>Climate Zone</label>
+          <input type="text" id="climate_zone" placeholder="e.g. 3B, 5A" />
+        </div>
+      </div>
+
+      <div class="section-divider">Additional Codes &amp; Notes</div>
+      <div class="field-grid col-1">
+        <div class="field">
+          <label>Additional Codes Referenced <span class="hint-inline">(comma-separated)</span></label>
+          <input type="text" id="additional_codes" placeholder="e.g. ASCE 7-22, ACI 318-19" />
+        </div>
+        <div class="field">
+          <label>Special Conditions / Site Constraints</label>
+          <textarea id="special_conditions" rows="3" placeholder="Flood zone, historic district, deed restrictions, etc."></textarea>
+        </div>
+        <div class="field">
+          <label>Variances Requested</label>
+          <textarea id="variances_requested" rows="2" placeholder="None, or describe variance(s)"></textarea>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-ghost" onclick="goStep(4)">&larr; Back</button>
+        <button class="btn-primary" onclick="runCheck()">Check Compliance &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 6: REVIEW & GENERATE ── -->
+    <section class="form-panel" id="step-6">
+      <div class="panel-header">
+        <h2>Compliance <em>Review</em></h2>
+        <p>Automated findings based on IBC, ADA, and safety codes.</p>
+      </div>
+
+      <!-- Findings loading state -->
+      <div id="findings-loading" class="findings-loading" style="display:none">
+        <div class="spinner"></div>
+        <span>Running compliance checks&hellip;</span>
+      </div>
+
+      <!-- Summary badges -->
+      <div id="findings-summary" class="findings-summary" style="display:none">
+        <div class="badge badge-pass" id="badge-pass">0 PASS</div>
+        <div class="badge badge-warn" id="badge-warn">0 WARNINGS</div>
+        <div class="badge badge-fail" id="badge-fail">0 VIOLATIONS</div>
+        <div class="badge badge-info" id="badge-load">Load: 0</div>
+      </div>
+
+      <!-- Violations -->
+      <div id="section-violations" style="display:none">
+        <div class="findings-group-header violations">&#10008; Violations &mdash; Must resolve before permit</div>
+        <div id="list-violations" class="findings-list"></div>
+      </div>
+
+      <!-- Warnings -->
+      <div id="section-warnings" style="display:none">
+        <div class="findings-group-header warnings">&#9888; Warnings &mdash; Review and document</div>
+        <div id="list-warnings" class="findings-list"></div>
+      </div>
+
+      <!-- Passes -->
+      <div id="section-passes" style="display:none">
+        <div class="findings-group-header passes">&#10004; Passing Items</div>
+        <div id="list-passes" class="findings-list"></div>
+      </div>
+
+      <div id="findings-empty" class="findings-empty" style="display:none">
+        No findings yet. Fill in the form and run the check.
+      </div>
+
+      <div class="disclaimer">
+        <strong>Important:</strong> These findings are automatically generated from the entered data.
+        All items must be reviewed, verified, and sealed by the licensed design professional of record.
+        This tool does not replace professional judgment or official AHJ review.
+      </div>
+
+      <!-- Generate PDF button -->
+      <div id="generate-block" class="generate-block" style="display:none">
+        <button class="btn-generate" id="btn-generate" type="button">
+          <span id="generate-label">&#8595; Generate CV2 PDF Form</span>
+        </button>
+        <div id="generate-error" class="error-msg" style="display:none"></div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-ghost" onclick="goStep(5)">&larr; Back</button>
+        <button class="btn-outline" onclick="runCheck()">&#8635; Re-run Check</button>
+      </div>
+    </section>
+
+  </div><!-- /form-area -->
+
+  <!-- RIGHT: live info panel -->
+  <aside class="info-panel">
+
+    <!-- AI Code Assistant -->
+    <div class="info-card ai-card">
+      <div class="ai-card-header">
+        <div class="ai-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="19" cy="5" r="3" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <span class="ai-card-title">AI Code Assistant</span>
+        <span class="ai-badge">Claude</span>
+      </div>
+      <p class="ai-card-desc">Ask about IBC, ADA, NFPA, or local code requirements for your project.</p>
+
+      <div class="ai-suggestions">
+        <button class="ai-suggest-btn" data-q="What sprinkler system is required for this occupancy and area?">Sprinkler requirements?</button>
+        <button class="ai-suggest-btn" data-q="How many accessible parking spaces are required?">Accessible parking?</button>
+        <button class="ai-suggest-btn" data-q="What are the egress requirements for this occupant load?">Egress rules?</button>
+        <button class="ai-suggest-btn" data-q="Does this building require an elevator for ADA compliance?">Elevator required?</button>
+      </div>
+
+      <div class="ai-input-row">
+        <textarea id="ai-question" rows="2" placeholder="Ask a code question…" maxlength="500"></textarea>
+        <button class="ai-send-btn" id="ai-send-btn" title="Ask Claude">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      <div class="ai-response-wrap" id="ai-response-wrap" style="display:none">
+        <div class="ai-response-loading" id="ai-response-loading" style="display:none">
+          <span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span>
+        </div>
+        <div class="ai-response-body" id="ai-response-body"></div>
+        <button class="ai-clear-btn" id="ai-clear-btn">Clear</button>
+      </div>
+    </div>
+
+    <!-- Live stats -->
+    <div class="info-card" id="info-risk">
+      <div class="info-card-title">Risk Category</div>
+      <div class="info-card-value" id="info-risk-val">II</div>
+      <div class="info-card-desc" id="info-risk-desc">Normal hazard &mdash; most buildings</div>
+    </div>
+    <div class="info-card" id="info-const">
+      <div class="info-card-title">Construction Type</div>
+      <div class="info-card-value" id="info-const-val">V-B</div>
+      <div class="info-card-desc" id="info-const-desc">Combustible, unprotected</div>
+    </div>
+    <div class="info-card" id="info-occ">
+      <div class="info-card-title">Occupancy Group(s)</div>
+      <div class="info-card-value chips" id="info-occ-val">—</div>
+    </div>
+    <div class="info-card" id="info-load">
+      <div class="info-card-title">Total Occupant Load</div>
+      <div class="info-card-value" id="info-load-val">—</div>
+      <div class="info-card-desc">Calculated per IBC Table 1004.5</div>
+    </div>
+    <div class="info-card code-ref-card">
+      <div class="info-card-title">Key Code References</div>
+      <ul class="code-ref-list" id="code-ref-list">
+        <li>IBC 2021 &mdash; Chapters 3, 5, 6</li>
+        <li>IBC Table 1604.5 &mdash; Risk Categories</li>
+        <li>IBC Table 1004.5 &mdash; Occupant Loads</li>
+        <li>IBC 903 &mdash; Sprinkler Systems</li>
+        <li>ADA 2010 Standards</li>
+        <li>NFPA 72 &mdash; Fire Alarm</li>
+        <li>ASCE 7 &mdash; Structural Loads</li>
+      </ul>
+    </div>
+  </aside>
+
+</main>
+
+<!-- ============================================================
+     TOOLTIPS
+     ============================================================ -->
+<div class="tooltip-popup" id="tooltip-popup" style="display:none"></div>
+
+<!-- ============================================================
+     DATA passed to JS
+     ============================================================ -->
+<script>
+  const OCCUPANCY_GROUPS = {{ occupancy_groups | tojson }};
+  const RISK_CATEGORIES  = {{ risk_categories  | tojson }};
+  const CONSTRUCTION_TYPES = {{ construction_types | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+
+</body>
+</html>
