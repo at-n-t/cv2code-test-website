@@ -28,9 +28,9 @@ from generators.compliance_checker import check_compliance
 app = Flask(__name__)
 app.secret_key = os.environ.get("CV2CC_SECRET", "cv2cc-dev-secret-change-in-prod")
 
-# Temp output directory inside web/
-OUTPUT_DIR = Path(__file__).parent / "generated"
-OUTPUT_DIR.mkdir(exist_ok=True)
+# Vercel's filesystem is read-only; use /tmp there, web/generated locally
+OUTPUT_DIR = Path("/tmp/cv2cc") if os.environ.get("VERCEL") else Path(__file__).parent / "generated"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ---------------------------------------------------------------------------
