@@ -100,6 +100,28 @@
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  /**
+   * Experiment: interface_test
+   * Routes users between the classic multi-step form (control, "/")
+   * and the AI chat-guided interface (treatment, "/chat").
+   *
+   * Statsig params:
+   *   variant   (string) — "form" | "chat"
+   *
+   * Only runs on the root path so chat users are not redirected again.
+   */
+  function applyInterfaceTest(exp) {
+    const variant = exp.get("variant", "form");
+    const onForm  = window.location.pathname === "/";
+    const onChat  = window.location.pathname === "/chat";
+
+    if (variant === "chat" && onForm) {
+      window.location.replace("/chat");
+    } else if (variant === "form" && onChat) {
+      window.location.replace("/");
+    }
+  }
+
   // ------------------------------------------------------------------
   // Initialise Statsig, then run all experiment checks
   // ------------------------------------------------------------------
@@ -107,6 +129,9 @@
 
   statsig.initialize(clientKey, user, { environment: { tier: "production" } })
     .then(() => {
+      // Interface routing runs first — may redirect before applying other tests
+      applyInterfaceTest( statsig.getExperiment("interface_test") );
+
       applyHeroCopyTest(  statsig.getExperiment("hero_copy_test")  );
       applyCtaButtonTest( statsig.getExperiment("cta_button_test") );
       applyAiChipsTest(   statsig.getExperiment("ai_chips_test")   );

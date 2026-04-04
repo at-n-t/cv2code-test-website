@@ -71,6 +71,154 @@ def index():
     )
 
 
+# ---------------------------------------------------------------------------
+# Chat interface (Version B — A/B test)
+# ---------------------------------------------------------------------------
+
+_CHAT_SYSTEM_PROMPT = """You are CV2CC, an expert AI assistant that helps licensed architects \
+fill out CV2 building permit application forms in the United States. Your job is to guide them \
+through a friendly, conversational interview — one topic at a time — to collect all the \
+information needed to generate a complete CV2 code-compliance form.
+
+TONE: Professional, warm, efficient. No fluff. Architects are busy — be direct.
+
+INTERVIEW ORDER (cover every topic before declaring ready):
+1. Project basics — name, project number (optional), permit number (optional), date prepared
+2. Professional credentials — architect name & license #, structural engineer license (optional)
+3. Site location — street address, city, county, STATE (critical — drives code editions)
+4. Code jurisdiction — IBC/IRC edition (auto-suggest from state below), local amendments
+5. Building classification — occupancy group(s) (A/B/E/F/H/I/M/R/S/U), construction type \
+(I-A, I-B, II-A, II-B, III-A, III-B, IV, V-A, V-B), risk category (I–IV), zoning district
+6. Dimensions — stories above grade, below grade, height (ft), total floor area (sq ft), \
+footprint (sq ft)
+7. Room/space breakdown — for each major space: room name, occupancy group, floor area
+8. Fire & life safety — sprinkler system (NFPA 13 / 13R / 13D), fire alarm system
+9. ADA / accessibility — ADA compliant, accessible route, total parking, accessible parking
+10. Energy & special — energy code, climate zone, special conditions, variances
+
+STATE → DEFAULT IBC EDITION quick reference:
+CA→2022, NY→2020, FL→2020, TX→2021, WA→2021, CO→2021, IL→2021, GA→2021, AZ→2018, all others→2021
+
+RULES:
+- Ask only ONE topic at a time. Wait for the user's reply before moving on.
+- When the user provides information, confirm it briefly ("Got it — 3 stories, 42 ft tall.") \
+then ask the next question.
+- If the user is unsure about a value, give a sensible default and tell them they can update it later.
+- When you have collected AT MINIMUM (project name, state, occupancy, construction type, \
+stories, building height, floor area), ask: "I have enough to generate your CV2 form — shall I \
+go ahead?"
+- If they confirm, include your normal conversational sign-off AND append the JSON block below.
+- Only include the <cv2_data> block ONCE, after confirmation.
+
+OUTPUT FORMAT (append after your conversational message, ONLY upon user confirmation):
+<cv2_data>
+{
+  "project_name": "",
+  "project_number": "",
+  "permit_number": "",
+  "date_prepared": "",
+  "prepared_by": "",
+  "architect_license": "",
+  "engineer_license": "",
+  "site_address": "",
+  "parcel_number": "",
+  "jurisdiction": {
+    "country": "USA",
+    "state": "",
+    "county": "",
+    "city": "",
+    "ibc_edition": "2021",
+    "irc_edition": "2021",
+    "nfpa_edition": "2021",
+    "local_amendments": ""
+  },
+  "zoning_district": "C-2",
+  "risk_category": "II",
+  "construction_type": "V-B",
+  "occupancy_groups": [],
+  "mixed_occupancy": false,
+  "mixed_occupancy_method": "",
+  "stories_above_grade": 1,
+  "stories_below_grade": 0,
+  "building_height_ft": 0,
+  "total_floor_area_sqft": 0,
+  "footprint_sqft": 0,
+  "rooms": [],
+  "sprinkler_system": false,
+  "sprinkler_standard": "",
+  "fire_alarm_system": false,
+  "fire_alarm_standard": "",
+  "ada_compliant": true,
+  "accessible_route": true,
+  "total_parking_spaces": 0,
+  "accessible_parking_spaces": 0,
+  "energy_code": "",
+  "climate_zone": "",
+  "osha_applicable": false,
+  "ifc_edition": "2021",
+  "additional_codes": [],
+  "special_conditions": "",
+  "variances_requested": ""
+}
+</cv2_data>
+
+Fill every field you have collected. Use sensible defaults for anything not provided."""
+
+
+@app.route("/chat")
+def chat():
+    return render_template("chat.html",
+        statsig_client_key=os.environ.get("STATSIG_CLIENT_KEY", ""),
+        today=date.today().isoformat(),
+    )
+
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    try:
+        import anthropic
+        import re
+
+        data = request.get_json(force=True)
+        messages = data.get("messages", [])
+
+        if not messages:
+            return jsonify({"ok": False, "error": "No messages provided"}), 400
+
+        client = anthropic.Anthropic()
+        response = client.messages.create(
+            model="claude-opus-4-6",
+            max_tokens=1024,
+            system=_CHAT_SYSTEM_PROMPT,
+            messages=messages,
+        )
+
+        full_reply = response.content[0].text
+
+        # Extract structured cv2_data if present
+        match = re.search(r"<cv2_data>(.*?)</cv2_data>", full_reply, re.DOTALL)
+        cv2_data = None
+        if match:
+            try:
+                cv2_data = json.loads(match.group(1).strip())
+            except json.JSONDecodeError:
+                cv2_data = None
+
+        # Strip the JSON block from what the user sees
+        visible = re.sub(r"\s*<cv2_data>.*?</cv2_data>", "", full_reply, flags=re.DOTALL).strip()
+
+        return jsonify({
+            "ok": True,
+            "message": visible,
+            "cv2_data": cv2_data,
+            "ready": cv2_data is not None,
+        })
+
+    except Exception as exc:
+        import traceback; traceback.print_exc()
+        return jsonify({"ok": False, "error": str(exc)}), 500
+
+
 @app.route("/api/state-codes/<state>")
 def state_codes(state):
     data_dir = Path(__file__).parent.parent / "data"

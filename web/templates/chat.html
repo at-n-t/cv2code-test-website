@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV2CC &mdash; AI-Guided Permit Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <!-- Statsig A/B testing -->
+  <script>
+    window.CV2CC_CONFIG = {
+      statsigClientKey: "{{ statsig_client_key }}"
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/statsig-js@5/build/statsig-js.min.js"></script>
+</head>
+<body class="chat-body">
+
+<!-- ============================================================
+     TOP NAV
+     ============================================================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-icon">&#9632;</span>
+      <span class="brand-name">CV2<em>CC</em></span>
+      <span class="brand-tagline">AI-Guided Form</span>
+    </div>
+    <nav class="topbar-nav">
+      <a href="/" class="btn-outline">&#8592; Switch to Form</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================
+     CHAT PAGE
+     ============================================================ -->
+<div class="chat-page">
+
+  <!-- LEFT: progress sidebar -->
+  <aside class="chat-sidebar">
+    <div class="chat-progress-card">
+      <div class="chat-progress-title">Collected so far</div>
+      <ul class="chat-progress-list" id="progress-list">
+        <li class="progress-item" id="prog-project">
+          <span class="prog-dot"></span>Project info
+        </li>
+        <li class="progress-item" id="prog-credentials">
+          <span class="prog-dot"></span>Credentials
+        </li>
+        <li class="progress-item" id="prog-location">
+          <span class="prog-dot"></span>Location
+        </li>
+        <li class="progress-item" id="prog-classification">
+          <span class="prog-dot"></span>Classification
+        </li>
+        <li class="progress-item" id="prog-dimensions">
+          <span class="prog-dot"></span>Dimensions
+        </li>
+        <li class="progress-item" id="prog-rooms">
+          <span class="prog-dot"></span>Rooms / spaces
+        </li>
+        <li class="progress-item" id="prog-systems">
+          <span class="prog-dot"></span>Fire &amp; safety
+        </li>
+        <li class="progress-item" id="prog-ada">
+          <span class="prog-dot"></span>ADA / parking
+        </li>
+        <li class="progress-item" id="prog-energy">
+          <span class="prog-dot"></span>Energy &amp; other
+        </li>
+      </ul>
+    </div>
+
+    <div class="chat-tip-card">
+      <div class="chat-tip-icon">&#9432;</div>
+      <p>Answer naturally — CV2CC extracts the details automatically. You can always edit the final form before generating.</p>
+    </div>
+  </aside>
+
+  <!-- RIGHT: chat area -->
+  <div class="chat-main">
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+      <!-- messages injected by chat.js -->
+    </div>
+
+    <!-- Generate bar (shown when AI has enough data) -->
+    <div class="chat-ready-bar" id="chat-ready-bar" style="display:none">
+      <div class="chat-ready-inner">
+        <div class="chat-ready-text">
+          <strong>&#10003; All required information collected</strong>
+          <span>Your CV2 form is ready to generate.</span>
+        </div>
+        <button class="btn-generate" id="btn-chat-generate">
+          <span id="generate-label">&#8595; Generate CV2 PDF Form</span>
+        </button>
+      </div>
+      <p class="error-msg" id="generate-error" style="display:none"></p>
+    </div>
+
+    <!-- Input area -->
+    <div class="chat-input-area">
+      <div class="chat-input-inner">
+        <textarea
+          id="chat-input"
+          class="chat-textarea"
+          placeholder="Type your reply…"
+          rows="2"
+          autocomplete="off"
+          spellcheck="true"
+        ></textarea>
+        <button class="chat-send-btn" id="chat-send" title="Send (Enter)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <p class="chat-input-hint">Press <kbd>Enter</kbd> to send &nbsp;&middot;&nbsp; <kbd>Shift+Enter</kbd> for new line</p>
+    </div>
+
+  </div><!-- /.chat-main -->
+</div><!-- /.chat-page -->
+
+<!-- Tooltip popup (reused from form) -->
+<div class="tooltip-popup" id="tooltip-popup" style="display:none"></div>
+
+<script>
+  window.CV2CC_TODAY = "{{ today }}";
+</script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/statsig-ab.js') }}"></script>
+
+</body>
+</html>
