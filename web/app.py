@@ -185,6 +185,23 @@ def api_chat():
         if not messages:
             return jsonify({"ok": False, "error": "No messages provided"}), 400
 
+        # Anthropic requires messages to start with "user" and alternate roles.
+        # Strip any leading assistant messages as a safety guard.
+        while messages and messages[0].get("role") != "user":
+            messages = messages[1:]
+
+        if not messages:
+            return jsonify({"ok": False, "error": "Message history must contain at least one user message"}), 400
+
+        # Deduplicate consecutive same-role messages (merge into one)
+        merged = [messages[0]]
+        for msg in messages[1:]:
+            if msg["role"] == merged[-1]["role"]:
+                merged[-1] = {"role": msg["role"], "content": merged[-1]["content"] + "\n" + msg["content"]}
+            else:
+                merged.append(msg)
+        messages = merged
+
         client = anthropic.Anthropic()
         response = client.messages.create(
             model="claude-opus-4-6",

@@ -242,36 +242,40 @@ sendBtn.addEventListener("click", () => sendMessage(inputEl.value));
 async function startConversation() {
   setSendState(false);
 
-  // Seed with a silent system-level opener so Claude knows to start
-  const seedMessage = { role: "user", content: "__init__" };
+  // This seed message MUST be stored in conversationHistory so subsequent
+  // user replies produce a valid user→assistant→user→... alternating sequence.
+  // The Anthropic API rejects any message list that doesn't start with "user".
+  const seedMsg = {
+    role: "user",
+    content: "Hi — please start the CV2 form interview. Welcome me briefly (1–2 sentences) then ask for the project name.",
+  };
 
   try {
     const res  = await fetch("/api/chat", {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
-      body:    JSON.stringify({
-        messages: [
-          {
-            role: "user",
-            content: "Hi — please start the CV2 form interview. Welcome me briefly (1–2 sentences) and ask for the project name."
-          }
-        ]
-      }),
+      body:    JSON.stringify({ messages: [seedMsg] }),
     });
     const data = await res.json();
 
     if (data.ok) {
-      appendMessage("assistant", data.message);
+      // Store BOTH sides so history stays user→assistant alternating
+      conversationHistory.push(seedMsg);
       conversationHistory.push({ role: "assistant", content: data.message });
+      appendMessage("assistant", data.message);
     } else {
-      appendMessage("assistant", "Welcome to CV2CC! I'm your AI guide for completing the CV2 building permit form. To get started — what's the name of your project?");
-      conversationHistory.push({ role: "assistant", content: "Welcome to CV2CC! I'm your AI guide for completing the CV2 building permit form. To get started — what's the name of your project?" });
+      // API returned an error — use a static fallback and seed history manually
+      const fallback = "Welcome to CV2CC! I'm your AI guide for completing the CV2 building permit form. To get started — what's the name of your project?";
+      conversationHistory.push(seedMsg);
+      conversationHistory.push({ role: "assistant", content: fallback });
+      appendMessage("assistant", fallback);
     }
   } catch (err) {
-    // Fallback welcome if API fails
+    // Network error — static fallback, still seed history correctly
     const fallback = "Welcome to CV2CC! I'll guide you through filling out your CV2 building permit form. Let's start — what is the project name?";
-    appendMessage("assistant", fallback);
+    conversationHistory.push(seedMsg);
     conversationHistory.push({ role: "assistant", content: fallback });
+    appendMessage("assistant", fallback);
   } finally {
     setSendState(true);
     inputEl.focus();
