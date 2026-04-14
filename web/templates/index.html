@@ -529,40 +529,6 @@
   <!-- RIGHT: live info panel -->
   <aside class="info-panel">
 
-    <!-- AI Code Assistant -->
-    <div class="info-card ai-card">
-      <div class="ai-card-header">
-        <div class="ai-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="19" cy="5" r="3" fill="currentColor" stroke="none"/></svg>
-        </div>
-        <span class="ai-card-title">AI Code Assistant</span>
-        <span class="ai-badge">Claude</span>
-      </div>
-      <p class="ai-card-desc">Ask about IBC, ADA, NFPA, or local code requirements for your project.</p>
-
-      <div class="ai-suggestions">
-        <button class="ai-suggest-btn" data-q="What sprinkler system is required for this occupancy and area?">Sprinkler requirements?</button>
-        <button class="ai-suggest-btn" data-q="How many accessible parking spaces are required?">Accessible parking?</button>
-        <button class="ai-suggest-btn" data-q="What are the egress requirements for this occupant load?">Egress rules?</button>
-        <button class="ai-suggest-btn" data-q="Does this building require an elevator for ADA compliance?">Elevator required?</button>
-      </div>
-
-      <div class="ai-input-row">
-        <textarea id="ai-question" rows="2" placeholder="Ask a code question…" maxlength="500"></textarea>
-        <button class="ai-send-btn" id="ai-send-btn" title="Ask Claude">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-
-      <div class="ai-response-wrap" id="ai-response-wrap" style="display:none">
-        <div class="ai-response-loading" id="ai-response-loading" style="display:none">
-          <span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span>
-        </div>
-        <div class="ai-response-body" id="ai-response-body"></div>
-        <button class="ai-clear-btn" id="ai-clear-btn">Clear</button>
-      </div>
-    </div>
-
     <!-- Live stats -->
     <div class="info-card" id="info-risk">
       <div class="info-card-title">Risk Category</div>
